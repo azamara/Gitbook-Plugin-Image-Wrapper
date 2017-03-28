@@ -1,31 +1,26 @@
 var cheerio = require( "cheerio" )
 
 
-var wrapImageTags = function(page){
+var wrapTableTags = function(page){
 
     var $ = cheerio.load(page.content);
 
-    // Loop through each image found in the page content
-    $('img').each(function(){
+    // Loop through each table found in the page content
+    $('table').each(function(){
 
         // Build the wrapper
-        var imageWrapper = $('<div>').addClass('image-wrapper');
+        var tableWrapper = $('<div>').addClass('table-wrapper');
 
-        // Get the image object
-        var img = $(this);
+        // Get the table object
+        var $table = $(this);
 
-        // Rebuild the image
-        var $image = $('<img>')
-                        .attr('src', img.attr('src'))
-                        .attr('alt', img.attr('alt'));
-
-        // Append the original image
-        imageWrapper.append($image);
+        // Append the original table
+        tableWrapper.append($table);
         
-        // Add the image with its wrapper
-        $(this).before(imageWrapper);
+        // Add the table with its wrapper
+        $(this).before(tableWrapper);
         
-        // Remove the image
+        // Remove the table
         $(this).remove();
     });
 
@@ -42,7 +37,7 @@ module.exports = {
     hooks: {
 
     	'page': function(page){    		
-    		return wrapImageTags(page);
+    		return wrapTableTags(page);
     	}
     },
 
